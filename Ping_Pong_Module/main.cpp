@@ -220,7 +220,9 @@ class PingPong
 
             for(int i=0; i<=width+1; i++) cout << "\xB2";
             cout << endl;
-            cout << "P1" << p1->getY() << endl << "P2" << p2->getY() << endl;
+            cout << "******Scores******"<< endl;
+            cout << "Player 1: " << scoreP1 << endl;
+            cout << "Player 2: " << scoreP2 << endl;
         }
 
 		void input()
@@ -246,7 +248,7 @@ class PingPong
 					if (player1y+4 < height)	p1->moveDown();
 				
 				if(curr == down2)
-					if (player1y+4 < height)	p2->moveDown();
+					if (player2y+4 < height)	p2->moveDown();
 					
 				if(ball->getDirection() == STOP)
 					ball->randomDir();
@@ -277,6 +279,29 @@ class PingPong
 			if(ballY == 0)	ball->changeDir(ball->getDirection()==UPRIGHT ? DOWNRIGHT:DOWNLEFT);
 			if(ballX == width-1)	scoreUp(p1);
 			if(ballX == 0)	scoreUp(p2);
+			
+			if(scoreP1>scoreP2 && scoreP1 >=1)
+			{
+				system("cls");
+				cout << endl << endl;
+				cout << "\t\t\t**********************************" << endl;
+				cout << "\t\t\t*                                *" << endl;
+				cout << "\t\t\t********** Player 1 won!! ********" << endl;
+				cout << "\t\t\t*                                *" << endl;
+				cout << "\t\t\t**********************************" << endl;
+				quit = true;
+			}
+			if(scoreP2>scoreP1 && scoreP2 >= 1)
+			{
+				system("cls");
+				cout << endl << endl;
+				cout << "\t\t\t**********************************" << endl;
+				cout << "\t\t\t*                                *" << endl;
+				cout << "\t\t\t********** Player 2 won!! ********" << endl;
+				cout << "\t\t\t*                                *" << endl;
+				cout << "\t\t\t**********************************" << endl;
+				quit = true;
+			}
 		}
 		
 		void run()
@@ -302,8 +327,18 @@ int main()
 //    keybd_event(VK_RETURN,0x1c,KEYEVENTF_KEYUP,0);
 //    keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
 
-    PingPong game(40, 20);
-    game.run();
+	char prompt = 'y';
+
+	do
+	{
+    	PingPong game(60, 15);
+    	game.run();
+    	cout << endl << endl << "Do you want to play another round?? (y/n)  ";
+    	cin >> prompt;
+    	system("cls");
+	}
+	while(!(prompt == 'n' || prompt == 'N'));
+
 
     cout << "\n\n";
     system("pause");

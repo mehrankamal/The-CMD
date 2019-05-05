@@ -280,7 +280,7 @@ class PingPong
 			if(ballX == width-1)	scoreUp(p1);
 			if(ballX == 0)	scoreUp(p2);
 			
-			if(scoreP1>scoreP2 && scoreP1 >=1)
+			if(scoreP1>scoreP2 && scoreP1 >=10)
 			{
 				system("cls");
 				cout << endl << endl;
@@ -291,7 +291,7 @@ class PingPong
 				cout << "\t\t\t**********************************" << endl;
 				quit = true;
 			}
-			if(scoreP2>scoreP1 && scoreP2 >= 1)
+			if(scoreP2>scoreP1 && scoreP2 >= 10)
 			{
 				system("cls");
 				cout << endl << endl;

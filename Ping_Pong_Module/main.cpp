@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cstdlib>
+#include<fstream>
 #include<time.h>
 #include<conio.h>
 #include<windows.h>
@@ -145,13 +146,14 @@ class PingPong
     private:
         int width, height;
         int scoreP1, scoreP2;
+        string nameP1, nameP2;
         char up1, down1, up2, down2;
         bool quit;
         Ball *ball;
         Paddle *p1;
         Paddle *p2;
     public:
-        PingPong(int w, int h)
+        PingPong(int w, int h, string name1, string name2)
         {
             srand(time(NULL));
             quit = false;
@@ -165,6 +167,8 @@ class PingPong
             ball = new Ball(w/2, h/2);
             p1 = new Paddle(1, h/2 - 3);
             p2 = new Paddle(w-2, h/2 - 3);
+            nameP1 = name1;
+            nameP2 = name2;
         }
 
         void scoreUp(Paddle * player)
@@ -220,9 +224,9 @@ class PingPong
 
             for(int i=0; i<=width+1; i++) cout << "\xB2";
             cout << endl;
-            cout << "******Scores******"<< endl;
-            cout << "Player 1: " << scoreP1 << endl;
-            cout << "Player 2: " << scoreP2 << endl;
+            cout << "\n\n\n\t\t\t\t******Scores******"<< endl;
+            cout << "\t\t\t\t" << nameP1 << "\t\t" << scoreP1 << endl;
+            cout << "\t\t\t\t" << nameP2 << "\t\t" << scoreP2 << endl;
         }
 
 		void input()
@@ -284,11 +288,12 @@ class PingPong
 			{
 				system("cls");
 				cout << endl << endl;
-				cout << "\t\t\t**********************************" << endl;
-				cout << "\t\t\t*                                *" << endl;
-				cout << "\t\t\t********** Player 1 won!! ********" << endl;
-				cout << "\t\t\t*                                *" << endl;
-				cout << "\t\t\t**********************************" << endl;
+				cout << "\t\t\t*********************************" << endl;
+				cout << "\t\t\t*                               *" << endl;
+				cout << "\t\t\t" << nameP1 << " Won!!" << endl;
+				cout << "\t\t\t*                               *" << endl;
+				cout << "\t\t\t*********************************" << endl;
+                writeToFile();
 				quit = true;
 			}
 			if(scoreP2>scoreP1 && scoreP2 >= 10)
@@ -297,13 +302,22 @@ class PingPong
 				cout << endl << endl;
 				cout << "\t\t\t**********************************" << endl;
 				cout << "\t\t\t*                                *" << endl;
-				cout << "\t\t\t********** Player 2 won!! ********" << endl;
+				cout << "\t\t\t" << nameP2 << " Won!!" << endl;
 				cout << "\t\t\t*                                *" << endl;
 				cout << "\t\t\t**********************************" << endl;
-				quit = true;
+				writeToFile();
+                quit = true;
 			}
 		}
 		
+        void writeToFile()
+        {
+            ofstream file_out;
+            file_out.open("high_scores.csv", ios::app);
+            file_out.seekp(0, ios::beg);
+            file_out << nameP1 << "," << scoreP1 << "," << nameP2 << "," << scoreP2 << endl;
+        }
+
 		void run()
 		{
 			while(!quit)
@@ -329,9 +343,17 @@ int main()
 
 	char prompt = 'y';
 
+    system("cls");
+
 	do
 	{
-    	PingPong game(60, 15);
+        string n1, n2;
+        cout << "\n\n\n\t\t\t\tEnter name for Player 1:  ";
+        getline(cin, n1);
+        cout << "\t\t\t\tEnter name for Player 2:  ";
+        getline(cin, n2);
+        system("cls");
+    	PingPong game(60, 15, n1, n2);
     	game.run();
     	cout << endl << endl << "Do you want to play another round?? (y/n)  ";
     	cin >> prompt;
@@ -341,6 +363,7 @@ int main()
 
 
     cout << "\n\n";
+    system("cls");
     system("pause");
 
     return 0;

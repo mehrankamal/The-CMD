@@ -1,6 +1,7 @@
 #include<iostream>
 #include<cstdlib>
 #include<fstream>
+#include<vector>
 #include<time.h>
 #include<conio.h>
 #include<windows.h>
@@ -10,6 +11,9 @@
 using namespace std;
 
 enum DIR {STOP = 0, LEFT = 1, UPLEFT = 2, DOWNLEFT = 3, RIGHT = 4, UPRIGHT = 5, DOWNRIGHT = 6};
+
+void startGame();
+void leadBoard();
 
 void gotoxy(short x, short y) {
 	COORD pos = {x, y};
@@ -316,6 +320,7 @@ class PingPong
             file_out.open("high_scores.csv", ios::app);
             file_out.seekp(0, ios::beg);
             file_out << nameP1 << "," << scoreP1 << "," << nameP2 << "," << scoreP2 << endl;
+            file_out.close();
         }
 
 		void run()
@@ -341,7 +346,83 @@ int main()
 //    keybd_event(VK_RETURN,0x1c,KEYEVENTF_KEYUP,0);
 //    keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
 
-	char prompt = 'y';
+
+    char select;
+
+    do
+    {
+        system("cls");
+        cout << "\n\n\n\n\t\t\t**********Main Menu**********" << endl;
+        cout << "\t\t\t** 1.| Play" << endl;
+        cout << "\t\t\t** 2.| Leader Board" << endl;
+        cout << "\t\t\t** 3.| Exit" << endl;
+        select = getch();
+        switch(select)
+        {
+            case '1':
+                startGame();
+                break;
+            case '2':
+                leadBoard();
+                break;
+            case '3':
+                cout << "Exitting ";
+                for(int i=0; i<3; i++)
+                {
+                    for(int i=0; i<100000000; i++);
+                        cout << " .";
+                }
+                cout << endl;
+                break;
+            default:
+                break;
+        }
+    }
+    while(!(select=='3'));
+
+    return 0;
+}
+
+void leadBoard()
+{
+    ifstream file_in;
+    file_in.open("high_scores.csv");
+
+    if(file_in.fail())
+    {
+        cout << "No record found!" << endl;
+        return;
+    }
+
+    vector<string> arr1D(4);
+    vector<vector<string>> arr2D;
+    do
+    {
+        getline(file_in, arr1D[0], ',');
+        getline(file_in, arr1D[1], ',');
+        getline(file_in, arr1D[2], ',');
+        getline(file_in, arr1D[3]);
+        arr2D.push_back(arr1D);
+    }
+    while(file_in);
+
+    system("cls");
+
+    cout << "\n\n\n\n\t\t\tPlayer 1 Name\t\t\tScore 1\t\t\tPlayer 2 Name\t\t\tScore 2\n";
+    for(int i=0; i<arr2D.size(); i++)
+    {
+        cout << "\t\t\t"<< arr2D[i][0] << "\t\t\t\t" << arr2D[i][1] << "\t\t\t" << arr2D[i][2] << "\t\t\t\t" << arr2D[i][3] << endl;
+    }
+
+    cout << "Press Enter key to continue..." << endl;
+    getch();
+
+    file_in.close();
+}
+
+void startGame()
+{
+    char prompt = 'y';
 
     system("cls");
 
@@ -355,8 +436,8 @@ int main()
         system("cls");
     	PingPong game(60, 15, n1, n2);
     	game.run();
-    	cout << endl << endl << "Do you want to play another round?? (y/n)  ";
-    	cin >> prompt;
+    	cout << "\t\t\t\tPress any key to continue..." << endl;
+        getch();
     	system("cls");
 	}
 	while(!(prompt == 'n' || prompt == 'N'));
@@ -364,7 +445,4 @@ int main()
 
     cout << "\n\n";
     system("cls");
-    system("pause");
-
-    return 0;
 }

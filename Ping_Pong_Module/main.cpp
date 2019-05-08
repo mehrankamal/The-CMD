@@ -426,23 +426,16 @@ void startGame()
 
     system("cls");
 
-	do
-	{
-        string n1, n2;
-        cout << "\n\n\n\t\t\t\tEnter name for Player 1:  ";
-        getline(cin, n1);
-        cout << "\t\t\t\tEnter name for Player 2:  ";
-        getline(cin, n2);
-        system("cls");
-    	PingPong game(60, 15, n1, n2);
-    	game.run();
-    	cout << "\t\t\t\tPress any key to continue..." << endl;
-        getch();
-    	system("cls");
-	}
-	while(!(prompt == 'n' || prompt == 'N'));
-
-
-    cout << "\n\n";
+    string n1, n2;
+    fflush(stdin);
+    cout << "\n\n\n\t\t\t\tEnter name for Player 1:  ";
+    getline(cin, n1);
+    cout << "\t\t\t\tEnter name for Player 2:  ";
+    getline(cin, n2);
+    system("cls");
+    PingPong game(60, 15, n1, n2);
+	game.run();
+    cout << "\t\t\t\tPress any key to continue..." << endl;
+    getch();
     system("cls");
 }
